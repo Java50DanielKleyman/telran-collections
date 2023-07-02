@@ -2,7 +2,9 @@ package telran.util;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
+
 
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
@@ -58,8 +60,15 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return false;
+		int oldLength = array.length;
+		Iterator<T> it = iterator();
+		while (it.hasNext()) {
+			T element = it.next();
+			if (predicate.test(element)) {
+				it.remove();
+			}
+		}
+		return oldLength > array.length;
 	}
 
 	@Override
@@ -82,8 +91,37 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return new ArrayListIterator();
+	}
+
+	private class ArrayListIterator implements Iterator<T> {
+		int currentIndex = 0;
+		boolean flNext = false;
+
+		@Override
+		public boolean hasNext() {
+
+			return currentIndex < size;
+		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			flNext = true;
+			return array[currentIndex++];
+		}
+
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			flNext = false;
+			ArrayList.this.remove(--currentIndex);
+		}
 	}
 
 	@Override
