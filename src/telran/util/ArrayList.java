@@ -147,13 +147,20 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public void add(int index, T obj) {
-		// TODO Auto-generated method stub
-
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException(index);
+		}
+		if (size + 1 > array.length) {
+			reallocate();
+		}
+		System.arraycopy(array, 0, array, 0, index);
+		System.arraycopy(array, index, array, index + 1, size - index);
+		array[index] = obj;
+		size++;
 	}
 
 	@Override
-	public T get(int index) {
-		// TODO Auto-generated method stub
+	public T get(int index) {		
 		return null;
 	}
 

@@ -15,8 +15,10 @@ import telran.util.Collection;
 class ArrayListTests {
 	Integer[] ar = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
 	Integer[] ar1 = { 19, 20, 21 };
+	Integer[] ar2 = { 1, 2, 23 };
 	ArrayList<Integer> forTest;
 	ArrayList<Integer> forTest1;
+	ArrayList<Integer> forTest2;
 
 	@BeforeEach
 	void setUp() {
@@ -24,7 +26,8 @@ class ArrayListTests {
 		addToCollection(ar, forTest);
 		forTest1 = new ArrayList<Integer>(ar1.length);
 		addToCollection(ar1, forTest1);
-
+		forTest2 = new ArrayList<Integer>(ar2.length);
+		addToCollection(ar2, forTest2);
 	}
 
 	void addToCollection(Integer[] ar, Collection<Integer> collection) {
@@ -110,17 +113,24 @@ class ArrayListTests {
 
 	@Test
 	void addAllTest() {
-		for (int i = 0; i < ar1.length; i++) {
-			forTest1.add(ar1[i]);
-		}
-		assertTrue(forTest.addAll(forTest1));
-		System.out.println(ar.length + ar1.length);
+		assertTrue(forTest.addAll(forTest1));	
 		assertEquals(ar.length + ar1.length, forTest.size());
 		
 	}
 
 	@Test
 	void removeAllTest() {
-
+		assertTrue(forTest.removeAll(forTest2));
+		assertFalse(forTest.removeAll(forTest1));
+	}
+	@Test
+	void addTest() {
+		int index = 3;
+		int value = 111;
+		Integer[] testArray = new Integer[5];
+		forTest.add(index, value);
+		assertEquals(ar.length + 1, forTest.size());
+		assertEquals(value, forTest.toArray(testArray)[index]);
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> forTest.add(-2, value));
 	}
 }
