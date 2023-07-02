@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,9 +114,9 @@ class ArrayListTests {
 
 	@Test
 	void addAllTest() {
-		assertTrue(forTest.addAll(forTest1));	
+		assertTrue(forTest.addAll(forTest1));
 		assertEquals(ar.length + ar1.length, forTest.size());
-		
+
 	}
 
 	@Test
@@ -123,14 +124,57 @@ class ArrayListTests {
 		assertTrue(forTest.removeAll(forTest2));
 		assertFalse(forTest.removeAll(forTest1));
 	}
+
 	@Test
 	void addTest() {
-		int index = 3;
+		int index = ar.length;
 		int value = 111;
-		Integer[] testArray = new Integer[5];
 		forTest.add(index, value);
+		assertEquals(index, forTest.indexOf(value));
 		assertEquals(ar.length + 1, forTest.size());
-		assertEquals(value, forTest.toArray(testArray)[index]);
-		assertThrowsExactly(IndexOutOfBoundsException.class, () -> forTest.add(-2, value));
+		final int indexNew = -2;
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> forTest.add(indexNew, value));
 	}
+
+	@Test
+	void getTest() {
+		int index = -3;
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> forTest.get(index));
+		int newIndex = 0;
+		assertEquals(ar[newIndex], forTest.get(newIndex));
+	}
+
+	@Test
+	void setTest() {
+		int index = 113;
+		int obj = 115;
+		assertThrowsExactly(IndexOutOfBoundsException.class, () -> forTest.set(index, obj));
+		int newIndex = 0;
+		assertEquals(ar[newIndex], forTest.set(newIndex, obj));
+	}
+
+	@Test
+	void lastIndexOfTest() {
+		int obj = 115;
+		assertEquals(-1, forTest.lastIndexOf(obj));
+		obj = 18;
+		assertEquals(17, forTest.lastIndexOf(obj));
+	}
+
+	@Test
+	void indexOfPredicateTest() {
+		Predicate<Integer> predicate = num -> num % 2 == 0;
+		assertEquals(1, forTest.indexOf(predicate));
+		predicate = num -> num % 20 == 0;
+		assertEquals(-1, forTest.indexOf(predicate));
+	}
+
+	@Test
+	void lastIndexOfPredicate() {
+		Predicate<Integer> predicate = num -> num % 2 == 0;
+		assertEquals(17, forTest.lastIndexOf(predicate));
+		predicate = num -> num % 20 == 0;
+		assertEquals(-1, forTest.lastIndexOf(predicate));
+	}
+
 }

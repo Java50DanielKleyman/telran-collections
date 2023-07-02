@@ -160,14 +160,21 @@ public class ArrayList<T> implements List<T> {
 	}
 
 	@Override
-	public T get(int index) {		
-		return null;
+	public T get(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
+		}
+		return array[index];
 	}
 
 	@Override
 	public T set(int index, T obj) {
-		// TODO Auto-generated method stub
-		return null;
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException(index);
+		}
+		T res = array[index];
+		array[index] = obj;
+		return res;
 	}
 
 	@Override
@@ -191,30 +198,51 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(T pattern) {
-		for (int i = 0; i < size; i++) {
-			if (pattern.equals(array[i])) {
-				return i;
+		int index = 0;
+		for (T obj : this) {
+			if (pattern.equals(obj)) {
+				return index;
 			}
+			index++;
 		}
 		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(T pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+		int index = size - 1;
+		while (index >= 0) {
+			if (pattern.equals(array[index])) {
+				return index;
+			}
+			index--;
+		}
+		return -1;
 	}
 
 	@Override
 	public int indexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		int index = 0;
+		for (T obj : this) {
+			if (predicate.test(obj)) {
+				return index;
+			}
+			index++;
+		}
+		return -1;
+
 	}
 
 	@Override
 	public int lastIndexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		int index = size - 1;
+		while (index >= 0) {
+			if (predicate.test(array[index])) {
+				return index;
+			}
+			index--;
+		}
+		return -1;
 	}
 
 }
