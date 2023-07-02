@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
@@ -73,20 +72,42 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (size > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}
+		return size;
 	}
 
 	@Override
 	public boolean addAll(Collection<T> collection) {
-		// TODO Auto-generated method stub
-		return false;
+		while ((collection.size() + size) > array.length) {
+			reallocate();
+		}
+		int oldSize = size;
+		@SuppressWarnings("unchecked")
+		T[] collectionArray = (T[]) new Object[collection.size()];
+		collectionArray = collection.toArray(collectionArray);
+		int index = 0;
+		while (index < collectionArray.length) {
+			array[size++] = collectionArray[index++];
+		}
+		return oldSize < size;
 	}
 
 	@Override
 	public boolean removeAll(Collection<T> collection) {
-		// TODO Auto-generated method stub
-		return false;
+		int oldsize = size;
+		@SuppressWarnings("unchecked")
+		T[] collectionArray = (T[]) new Object[collection.size()];
+		collectionArray = collection.toArray(collectionArray);
+		for (T object : collectionArray) {
+			int index = indexOf(object);
+			if (index != -1) {
+				remove(index);
+				size--;
+			}
+		}
+		return size < oldsize;
 	}
 
 	@Override

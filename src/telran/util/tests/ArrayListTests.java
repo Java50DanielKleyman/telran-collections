@@ -10,16 +10,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import telran.util.ArrayList;
+import telran.util.Collection;
 
 class ArrayListTests {
 	Integer[] ar = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 };
+	Integer[] ar1 = { 19, 20, 21 };
 	ArrayList<Integer> forTest;
+	ArrayList<Integer> forTest1;
 
 	@BeforeEach
 	void setUp() {
-		forTest = new ArrayList<Integer>(18);
+		forTest = new ArrayList<Integer>(ar.length);
+		addToCollection(ar, forTest);
+		forTest1 = new ArrayList<Integer>(ar1.length);
+		addToCollection(ar1, forTest1);
+
+	}
+
+	void addToCollection(Integer[] ar, Collection<Integer> collection) {
+
 		for (int i = 0; i < ar.length; i++) {
-			forTest.add(ar[i]);
+			collection.add(ar[i]);
 		}
 	}
 
@@ -51,41 +62,65 @@ class ArrayListTests {
 		assertEquals(18, forTest.remove(16));
 		assertEquals(1, forTest.remove(0));
 	}
+
 	@Test
 	void toArrayTest() {
-		Integer [] expected = ar;
-		Integer [] testArray = new Integer[25];
+		Integer[] expected = ar;
+		Integer[] testArray = new Integer[25];
 		assertEquals(25, forTest.toArray(testArray).length);
-		Integer [] testArray1 = new Integer[5];
+		Integer[] testArray1 = new Integer[5];
 		assertEquals(expected.length, forTest.toArray(testArray1).length);
-		
+
 	}
+
 	@Test
 	void iteratorTest() {
 		int elements = 0;
 		Iterator<Integer> it = forTest.iterator();
-		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
-		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
-		while(it.hasNext()) {
+		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
+		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
+		while (it.hasNext()) {
 			it.next();
 			elements++;
 		}
 		assertEquals(ar.length, elements);
-		assertThrowsExactly(NoSuchElementException.class, ()->it.next());
+		assertThrowsExactly(NoSuchElementException.class, () -> it.next());
 		it.remove();
-		assertThrowsExactly(IllegalStateException.class, ()->it.remove());
-}
+		assertThrowsExactly(IllegalStateException.class, () -> it.remove());
+	}
+
 	@Test
 	void removeIfTest() {
-		Integer [] expected = { 2, 4, 6, 8, 10, 12, 14, 16, 18 };
-		Integer [] testArray = new Integer[0];
-		forTest.removeIf(element -> element%2!=0);		
+		Integer[] expected = { 2, 4, 6, 8, 10, 12, 14, 16, 18 };
+		Integer[] testArray = new Integer[0];
+		forTest.removeIf(element -> element % 2 != 0);
 		assertArrayEquals(expected, forTest.toArray(testArray));
-		
-		Integer [] expected1 = new Integer[0];
-		Integer [] testArray1 = new Integer[0];
-		forTest.removeIf(element -> element%2==0);
+
+		Integer[] expected1 = new Integer[0];
+		Integer[] testArray1 = new Integer[0];
+		forTest.removeIf(element -> element % 2 == 0);
 		assertArrayEquals(expected1, forTest.toArray(testArray1));
+	}
+
+	@Test
+	void sizeTest() {
+		assertEquals(ar.length, forTest.size());
+
+	}
+
+	@Test
+	void addAllTest() {
+		for (int i = 0; i < ar1.length; i++) {
+			forTest1.add(ar1[i]);
+		}
+		assertTrue(forTest.addAll(forTest1));
+		System.out.println(ar.length + ar1.length);
+		assertEquals(ar.length + ar1.length, forTest.size());
 		
+	}
+
+	@Test
+	void removeAllTest() {
+
 	}
 }
