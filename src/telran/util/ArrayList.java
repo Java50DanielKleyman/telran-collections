@@ -145,7 +145,6 @@ public class ArrayList<T> implements List<T> {
 
 		return lastIndexOf(Predicate.isEqual(pattern));
 	}
-
 	@Override
 	public int indexOf(Predicate<T> predicate) {
 		int res = -1;
