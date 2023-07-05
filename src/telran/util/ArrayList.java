@@ -120,7 +120,7 @@ public class ArrayList<T> implements List<T> {
 		indexValidation(index, false);
 		T res = array[index];
 		size--;
-		System.arraycopy(array, 0, array, 0, index);
+//		System.arraycopy(array, 0, array, 0, index);
 		System.arraycopy(array, index + 1, array, index, size - index);
 		array[size] = null;
 		return res;
