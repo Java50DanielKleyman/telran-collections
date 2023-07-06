@@ -63,18 +63,34 @@ public class ArrayList<T> implements List<T> {
 
 	}
 
+//	for (int index = 0; index < size; index++) {
+//	if (predicate.test(array[index])) {
+//		System.arraycopy(array, index + 1, array, index, size - index);
+//		size--;
+//		index--;
+//	}
+//}
 	@Override
 	public boolean removeIf(Predicate<T> predicate) {
 		// TODO try to rewrite method removeIf with complexity O[N]
-		int oldSize = size();
+		T[] newArray = Arrays.copyOf(array, size);
+		int index = 0;
+		int newSize = size;
 		for (int i = 0; i < size; i++) {
-			if (predicate.test(array[i])) {
-				remove(i);
-				size--;
+			if (!predicate.test(array[i])) {
+				newArray[index++] = array[i];
+			} else {
+				newSize--;
 			}
 		}
+		if (newSize == size) {
+			return false;
+		}
+		System.arraycopy(newArray, 0, array, 0, newSize);
+		size = newSize;
+		array[newSize] = null;
 
-		return oldSize > size();
+		return true;
 	}
 
 	@Override
@@ -145,6 +161,7 @@ public class ArrayList<T> implements List<T> {
 
 		return lastIndexOf(Predicate.isEqual(pattern));
 	}
+
 	@Override
 	public int indexOf(Predicate<T> predicate) {
 		int res = -1;

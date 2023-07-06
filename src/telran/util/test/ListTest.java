@@ -20,6 +20,7 @@ abstract class ListTest extends CollectionTest {
 	
 
 	@Override
+	@Test
 	void addTest() {
 		Integer [] expected = {10,  -20, 8, 14, 30, 12, 100, 10};
 		assertTrue(list.add(10));

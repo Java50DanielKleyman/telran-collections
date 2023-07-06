@@ -60,4 +60,3 @@ public interface Collection<T> extends Iterable<T>{
 		return oldSize > size();
 	}
 }
-
