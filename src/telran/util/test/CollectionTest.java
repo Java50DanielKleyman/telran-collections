@@ -33,7 +33,7 @@ Collection<Integer> collection;
 		 assertTrue(collection.remove(14));
 		 assertArrayEquals(expected3, collection.toArray(new Integer[0]));
 		 assertFalse(collection.remove(100000));
-		 assertArrayEquals(expected3, collection.toArray(new Integer[0]));
+		 assertArrayEquals(expected3, collection.toArray(new Integer[0]));		 
 	 }
 	 @Test
 	 void clearTest() {
