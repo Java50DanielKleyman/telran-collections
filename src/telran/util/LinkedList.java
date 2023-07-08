@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-
 public class LinkedList<T> implements List<T> {
 	private static class Node<T> {
 		T obj;
@@ -82,11 +81,13 @@ public class LinkedList<T> implements List<T> {
 
 	private class LinkedListIterator implements Iterator<T> {
 		Node<T> current = head;
+		int currentIndex = 0;
+		boolean isNext = false;
 
 		@Override
 		public boolean hasNext() {
 
-			return current.next != null;
+			return current != null;
 		}
 
 		@Override
@@ -94,9 +95,20 @@ public class LinkedList<T> implements List<T> {
 			if (!hasNext()) {
 				throw new NoSuchElementException();
 			}
+			isNext = true;
 			T currentObj = current.obj;
 			current = current.next;
+			currentIndex++;
 			return currentObj;
+		}
+
+		@Override
+		public void remove() {
+			if (!isNext) {
+				throw new IllegalStateException();
+			}
+			LinkedList.this.remove(--currentIndex);
+			isNext = false;
 		}
 
 	}
@@ -146,8 +158,36 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO Auto-generated method stub
+		if (index == size) {
+			removeTail();
+		} else if (index == 0) {
+			removeHead();
+		} else {
+			removeMiddle(index);
+		}
+		size--;
+
 		return null;
+	}
+
+	private void removeMiddle(int index) {
+		Node<T> newCurrentNode = getNode(index).next;
+		Node<T> prevNode = getNode(index).prev;
+		newCurrentNode.prev = prevNode;
+		prevNode.next = newCurrentNode;
+
+	}
+
+	private void removeHead() {
+		head = head.next;
+		head.prev = null;
+
+	}
+
+	private void removeTail() {
+		tail = tail.prev;
+		tail.next = null;
+
 	}
 
 	@Override
