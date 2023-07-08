@@ -159,23 +159,39 @@ public class LinkedList<T> implements List<T> {
 		Node<T> oldNode = getNode(index);
 		Node<T> newNode = new Node<>(obj);
 		T oldObject = oldNode.obj;
-		Node<T> nextNode = oldNode.next;
-		Node<T> prevNode = oldNode.prev;
 		if (index == 0) {
-			head = newNode;
-			nextNode.prev = head;
-			head.next = nextNode;
+			setHead(newNode);
 		} else if (index == size - 1) {
-			tail = newNode;
-			prevNode.next = tail;
-			tail.prev = prevNode;
+			setTail(newNode);
 		} else {
-			newNode.next = nextNode;
-			newNode.prev = prevNode;
-			nextNode.prev = newNode;
-			prevNode.next = newNode;
+			setMiddle(newNode, oldNode);
 		}
 		return oldObject;
+	}
+
+	private void setMiddle(Node<T> newNode, Node<T> oldNode) {
+		Node<T> prevNode = oldNode.prev;
+		Node<T> nextNode = oldNode.next;
+		newNode.next = nextNode;
+		newNode.prev = prevNode;
+		nextNode.prev = newNode;
+		prevNode.next = newNode;
+
+	}
+
+	private void setTail(Node<T> newNode) {
+		Node<T> prevNode = tail.prev;
+		tail = newNode;
+		prevNode.next = tail;
+		tail.prev = prevNode;
+
+	}
+
+	private void setHead(Node<T> newNode) {
+		Node<T> nextNode = head.next;
+		head = newNode;
+		nextNode.prev = head;
+		head.next = nextNode;
 	}
 
 	@Override
@@ -286,7 +302,7 @@ public class LinkedList<T> implements List<T> {
 		int index = 0;
 		while (current != null) {
 			if (predicate.test(current.obj)) {
-				remove(index--);					
+				remove(index--);
 			}
 			current = current.next;
 			index++;
