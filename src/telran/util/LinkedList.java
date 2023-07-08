@@ -172,7 +172,7 @@ public class LinkedList<T> implements List<T> {
 		} else {
 			newNode.next = nextNode;
 			newNode.prev = prevNode;
-			nextNode.prev = newNode;			
+			nextNode.prev = newNode;
 			prevNode.next = newNode;
 		}
 		return oldObject;
@@ -278,21 +278,21 @@ public class LinkedList<T> implements List<T> {
 		}
 		return -1;
 	}
-//	   @Override
-//	   public boolean removeIf(Predicate<T> predicate) {
-//		   int oldSize = size;
-//			int indexDest = 0;
-////			for(int indexSrc = 0; indexSrc < oldSize; indexSrc++) {
-////				if (predicate.test(array[indexSrc])) {
-////					size--;
-////				} else {
-////					array[indexDest++] = array[indexSrc];
-////				}
-////			}
-////			for (int i = size; i < oldSize; i++) {
-////				array[i] = null;
-////			}
-//			return oldSize > size;
-//		  
-//	   }
+
+	@Override
+	public boolean removeIf(Predicate<T> predicate) {
+		int oldSize = size;
+		Node<T> current = head;
+		int index = 0;
+		while (current != null) {
+			if (predicate.test(current.obj)) {
+				remove(index--);					
+			}
+			current = current.next;
+			index++;
+		}
+
+		return oldSize > size;
+
+	}
 }
