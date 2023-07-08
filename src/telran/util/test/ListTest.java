@@ -60,6 +60,20 @@ abstract class ListTest extends CollectionTest {
 		
 	}
 	@Test
+	void indexOfPatternTest() {
+		assertEquals(6, list.lastIndexOf(100));
+		assertEquals(3, list.lastIndexOf(14));
+		assertEquals(0, list.lastIndexOf(10));
+		assertEquals(-1, list.lastIndexOf(5000));
+	}
+	@Test
+	void lastIndexOfPatternTest() {
+		assertEquals(6, list.lastIndexOf(100));
+		assertEquals(3, list.lastIndexOf(14));
+		assertEquals(0, list.lastIndexOf(10));
+		assertEquals(-1, list.lastIndexOf(10000));
+	}
+	@Test
 	void removeIndex() {
 		Integer [] expected1 = { -20, 8, 14, 30, 12, 100};
 		Integer [] expected2 = { -20, 8, 30, 12, 100};

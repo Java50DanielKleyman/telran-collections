@@ -192,26 +192,57 @@ public class LinkedList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object pattern) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node<T> current = head;
+		int index = 0;
+		while (current != null) {
+			if (current.obj.equals(pattern)) {
+				return index;
+			}
+			current = current.next;
+			index++;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object pattern) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		Node<T> current = tail;
+		int index = size-1;
+		while (current != null) {
+			if (current.obj.equals(pattern)) {
+				return index;
+			}
+			current = current.prev;
+			index--;
+		}
+		return -1;			}
 
 	@Override
 	public int indexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node<T> current = head;
+		int index = 0;
+		while (current != null) {
+			if (predicate.test(current.obj)) {
+				return index;
+			}
+			current = current.next;
+			index++;
+		}
+		return -1;		
 	}
 
 	@Override
 	public int lastIndexOf(Predicate<T> predicate) {
-		// TODO Auto-generated method stub
-		return 0;
+		Node<T> current = tail;
+		int index = size-1;
+		while (current != null) {
+			if (predicate.test(current.obj)){
+				return index;
+			}
+			current = current.prev;
+			index--;
+		}
+		return -1;
 	}
 
 }
