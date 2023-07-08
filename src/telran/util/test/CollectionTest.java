@@ -3,6 +3,7 @@ package telran.util.test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,9 @@ import telran.util.Collection;
 
 abstract class CollectionTest {
 Integer [] numbers = {10, -20, 8, 14, 30, 12, 100};
-Collection<Integer> collection;
+static final int N_BIG_NUMBERS = 100_000;
+static final int N_RUNS = 1000;
+protected Collection<Integer> collection;
 	@BeforeEach
 	void setUp()  {
 		for(Integer num: numbers) {
@@ -33,7 +36,7 @@ Collection<Integer> collection;
 		 assertTrue(collection.remove(14));
 		 assertArrayEquals(expected3, collection.toArray(new Integer[0]));
 		 assertFalse(collection.remove(100000));
-		 assertArrayEquals(expected3, collection.toArray(new Integer[0]));		 
+		 assertArrayEquals(expected3, collection.toArray(new Integer[0]));
 	 }
 	 @Test
 	 void clearTest() {
@@ -86,6 +89,24 @@ Collection<Integer> collection;
 		 assertFalse(collection.removeAll(col1));
 		 assertArrayEquals(expected, collection.toArray(new Integer[0]));
 	 }
+	 @Test
+	 void removeIfPerformanceTest() {
+		 Integer[] bigArray = getBigArray();
+		 for(int i = 0; i < N_RUNS; i++) {
+			  Collection<Integer> bigCollection = getCollection(bigArray);
+			  bigCollection.clear();
+		 }
+		
+	 }
+
+	private Integer[] getBigArray() {
+		Integer[] res = new Integer[N_BIG_NUMBERS];
+		Random gen = new Random();
+		for(int i = 0; i < N_BIG_NUMBERS; i++) {
+			res[i] = gen.nextInt();
+		}
+		return res;
+	}
 
 	protected abstract Collection<Integer> getCollection(Integer[] ar1);
 }

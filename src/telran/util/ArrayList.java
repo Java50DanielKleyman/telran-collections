@@ -4,54 +4,49 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-
 @SuppressWarnings("unchecked")
 public class ArrayList<T> implements List<T> {
 	private static final int DEFAULT_CAPACITY = 16;
 	private T[] array;
 	private int size = 0;
-
+	
 	private class ArrayListIterator implements Iterator<T> {
 		int currentIndex = 0;
 		boolean flNext = false;
-
-		@Override
-		public boolean hasNext() {
-
-			return currentIndex < size;
-		}
-
-		@Override
-		public T next() {
-			if (!hasNext()) {
-				throw new NoSuchElementException();
+			@Override
+			public boolean hasNext() {
+				
+				return currentIndex < size;
 			}
-			flNext = true;
-			return array[currentIndex++];
-		}
 
-		@Override
-		public void remove() {
-			if (!flNext) {
-				throw new IllegalStateException();
+			@Override
+			public T next() {
+				if(!hasNext()) {
+					throw new NoSuchElementException();
+				}
+				flNext = true;
+				return array[currentIndex++];
 			}
-			ArrayList.this.remove(--currentIndex);
-			flNext = false;
+			@Override
+			public void remove() {
+				if(!flNext) {
+					throw new IllegalStateException();
+				}
+				ArrayList.this.remove(--currentIndex);
+				flNext = false;
+			}
+			
 		}
-
-	}
-
+	
 	public ArrayList(int capacity) {
 		array = (T[]) new Object[capacity];
 	}
-
 	public ArrayList() {
 		this(DEFAULT_CAPACITY);
 	}
-
 	@Override
 	public boolean add(T obj) {
-		if (size == array.length) {
+		if(size == array.length) {
 			reallocate();
 		}
 		array[size++] = obj;
@@ -60,48 +55,43 @@ public class ArrayList<T> implements List<T> {
 
 	private void reallocate() {
 		array = Arrays.copyOf(array, array.length * 2);
-
+		
 	}
-
-//	for (int index = 0; index < size; index++) {
-//	if (predicate.test(array[index])) {
-//		System.arraycopy(array, index + 1, array, index, size - index);
-//		size--;
-//		index--;
-//	}
-//}
-	@Override
-	public boolean removeIf(Predicate<T> predicate) {
-		// TODO try to rewrite method removeIf with complexity O[N]
-		T[] newArray = Arrays.copyOf(array, size);
-		int index = 0;
-		int newSize = size;
-		for (int i = 0; i < size; i++) {
-			if (!predicate.test(array[i])) {
-				newArray[index++] = array[i];
+	
+   @Override
+   public boolean removeIf(Predicate<T> predicate) {
+	   int oldSize = size;
+		int indexDest = 0;
+		for(int indexSrc = 0; indexSrc < oldSize; indexSrc++) {
+			if (predicate.test(array[indexSrc])) {
+				size--;
 			} else {
-				newSize--;
+				array[indexDest++] = array[indexSrc];
 			}
 		}
-		if (newSize == size) {
-			return false;
+		for (int i = size; i < oldSize; i++) {
+			array[i] = null;
 		}
-		System.arraycopy(newArray, 0, array, 0, newSize);
-		size = newSize;
-		array[newSize] = null;
+		return oldSize > size;
+	  
+   }
+	
 
-		return true;
-	}
+	
 
 	@Override
 	public int size() {
-
+		
 		return size;
 	}
 
+	
+
+	
+
 	@Override
 	public Iterator<T> iterator() {
-
+		
 		return new ArrayListIterator();
 	}
 
@@ -114,6 +104,7 @@ public class ArrayList<T> implements List<T> {
 		System.arraycopy(array, index, array, index + 1, size - index);
 		array[index] = obj;
 		size++;
+		
 
 	}
 
@@ -125,7 +116,7 @@ public class ArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T obj) {
-
+		
 		T res = get(index);
 		array[index] = obj;
 		return res;
@@ -136,29 +127,22 @@ public class ArrayList<T> implements List<T> {
 		indexValidation(index, false);
 		T res = array[index];
 		size--;
-//		System.arraycopy(array, 0, array, 0, index);
+		System.arraycopy(array, 0, array, 0, index);
 		System.arraycopy(array, index + 1, array, index, size - index);
 		array[size] = null;
 		return res;
 	}
 
-	private void indexValidation(int index, boolean sizeInclusive) {
-		int bounder = sizeInclusive ? size : size - 1;
-		if (index < 0 || index > bounder) {
-			throw new IndexOutOfBoundsException(index);
-		}
-
-	}
-
+	
 	@Override
 	public int indexOf(Object pattern) {
-
+		
 		return indexOf(Predicate.isEqual(pattern));
 	}
 
 	@Override
 	public int lastIndexOf(Object pattern) {
-
+		
 		return lastIndexOf(Predicate.isEqual(pattern));
 	}
 

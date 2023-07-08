@@ -2,3 +2,6 @@
 /ArrayList.class
 /Collection.class
 /List.class
+/LinkedList$Node.class
+/LinkedList.class
+/LinkedList$LinkedListIterator.class
