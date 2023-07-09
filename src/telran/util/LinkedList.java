@@ -156,43 +156,49 @@ public class LinkedList<T> implements List<T> {
 	@Override
 	public T set(int index, T obj) {
 		indexValidation(index, false);
-		Node<T> oldNode = getNode(index);
-		Node<T> newNode = new Node<>(obj);
-		T oldObject = oldNode.obj;
-		if (index == 0) {
-			setHead(newNode);
-		} else if (index == size - 1) {
-			setTail(newNode);
-		} else {
-			setMiddle(newNode, oldNode);
-		}
+		T oldObject = get(index);
+		getNode(index).obj = obj;
 		return oldObject;
 	}
-
-	private void setMiddle(Node<T> newNode, Node<T> oldNode) {
-		Node<T> prevNode = oldNode.prev;
-		Node<T> nextNode = oldNode.next;
-		newNode.next = nextNode;
-		newNode.prev = prevNode;
-		nextNode.prev = newNode;
-		prevNode.next = newNode;
-
-	}
-
-	private void setTail(Node<T> newNode) {
-		Node<T> prevNode = tail.prev;
-		tail = newNode;
-		prevNode.next = tail;
-		tail.prev = prevNode;
-
-	}
-
-	private void setHead(Node<T> newNode) {
-		Node<T> nextNode = head.next;
-		head = newNode;
-		nextNode.prev = head;
-		head.next = nextNode;
-	}
+//	public T set(int index, T obj) {
+//		indexValidation(index, false);
+//		Node<T> oldNode = getNode(index);
+//		Node<T> newNode = new Node<>(obj);
+//		T oldObject = oldNode.obj;
+//		if (index == 0) {
+//			setHead(newNode);
+//		} else if (index == size - 1) {
+//			setTail(newNode);
+//		} else {
+//			setMiddle(newNode, oldNode);
+//		}
+//		return oldObject;
+//	}
+//
+//	private void setMiddle(Node<T> newNode, Node<T> oldNode) {
+//		Node<T> prevNode = oldNode.prev;
+//		Node<T> nextNode = oldNode.next;
+//		newNode.next = nextNode;
+//		newNode.prev = prevNode;
+//		nextNode.prev = newNode;
+//		prevNode.next = newNode;
+//
+//	}
+//
+//	private void setTail(Node<T> newNode) {
+//		Node<T> prevNode = tail.prev;
+//		tail = newNode;
+//		prevNode.next = tail;
+//		tail.prev = prevNode;
+//
+//	}
+//
+//	private void setHead(Node<T> newNode) {
+//		Node<T> nextNode = head.next;
+//		head = newNode;
+//		nextNode.prev = head;
+//		head.next = nextNode;
+//	}
 
 	@Override
 	public T remove(int index) {
