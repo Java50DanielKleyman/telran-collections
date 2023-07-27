@@ -78,18 +78,18 @@ public class TreeSetTest extends SortedSetTest {
 
 		if (left <= right) {
 			int rootIndex = (left + right) / 2;
-			helperArray[index] = array[rootIndex];
+			helperArray[index] = array[rootIndex]; 
 			reorderArrayMethod(helperArray, array, left, rootIndex - 1, 2* index +1);
 			reorderArrayMethod(helperArray, array, rootIndex + 1, right, 2* index + 2);			
 		}
 	}
-
 	@Test
 	void inverseTest() {
 		Integer[] expected = { 100, 30, 14, 10, 12, 8, -20 };
 		treeSet.inverse();
 		assertArrayEquals(expected, treeSet.toArray(new Integer[0]));
 		assertTrue(treeSet.contains(100));
+		
 	}
 
 }
