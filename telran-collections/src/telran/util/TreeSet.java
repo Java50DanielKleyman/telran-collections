@@ -380,6 +380,7 @@ public class TreeSet<T> implements SortedSet<T> {
 			inverse(node.left);
 			inverse(node.right);
 		}
+		
 	}
 
 }
