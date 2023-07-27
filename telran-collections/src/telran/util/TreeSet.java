@@ -3,90 +3,101 @@ package telran.util;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
 @SuppressWarnings("unchecked")
 public class TreeSet<T> implements SortedSet<T> {
-private static class Node<T> {
-	T obj;
-	Node<T> parent;
-	Node<T> left;
-	Node<T> right;
-	Node(T obj) {
-		this.obj = obj;
-	}
-	public void setNulls() {
-		obj = null;
-		parent = left = right = null;
-		
-	}
-}
-private class TreeSetIterator implements Iterator<T> {
-	Node<T> current;
-	Node<T> prev;
-	boolean flNext = false;
+	private static class Node<T> {
+		T obj;
+		Node<T> parent;
+		Node<T> left;
+		Node<T> right;
 
-	TreeSetIterator() {
-		current = root == null ? null : getLeastFrom(root);
-	}
-
-	@Override
-	public boolean hasNext() {
-
-		return current != null;
-	}
-
-	@Override
-	public T next() {
-		if (!hasNext()) {
-			throw new NoSuchElementException();
+		Node(T obj) {
+			this.obj = obj;
 		}
-		T res = current.obj;
-		prev = current;
-		current = getCurrent(current);
-		flNext = true;
-		return res;
+
+		public void setNulls() {
+			obj = null;
+			parent = left = right = null;
+
+		}
 	}
 
-	@Override
-	public void remove() {
-		if (!flNext) {
-			throw new IllegalStateException();
+	private class TreeSetIterator implements Iterator<T> {
+		Node<T> current;
+		Node<T> prev;
+		boolean flNext = false;
+
+		TreeSetIterator() {
+			current = root == null ? null : getLeastFrom(root);
 		}
-		removeNode(prev);
-		flNext = false;
+
+		@Override
+		public boolean hasNext() {
+
+			return current != null;
+		}
+
+		@Override
+		public T next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			T res = current.obj;
+			prev = current;
+			current = getCurrent(current);
+			flNext = true;
+			return res;
+		}
+
+		@Override
+		public void remove() {
+			if (!flNext) {
+				throw new IllegalStateException();
+			}
+			removeNode(prev);
+			flNext = false;
+		}
 	}
-}
+
 	Node<T> root;
 	int size;
 	Comparator<T> comp;
 	private int spacesPerLevel = 2;
+
 	public int getSpacesPerLevel() {
 		return spacesPerLevel;
 	}
+
 	public void setSpacesPerLevel(int spacesPerLevel) {
 		this.spacesPerLevel = spacesPerLevel;
 	}
+
 	private Node<T> getCurrent(Node<T> current) {
 
 		return current.right != null ? getLeastFrom(current.right) : getGreaterParent(current);
 	}
+
 	private Node<T> getGreaterParent(Node<T> current) {
 		while (current.parent != null && current == current.parent.right) {
 			current = current.parent;
 		}
 		return current.parent;
 	}
+
 	private Node<T> getParentOrNode(T key) {
 		Node<T> current = root;
 		Node<T> parent = null;
 		int compRes;
-		while(current != null && (compRes = comp.compare(key, current.obj)) != 0) {
+		while (current != null && (compRes = comp.compare(key, current.obj)) != 0) {
 			parent = current;
 			current = compRes < 0 ? current.left : current.right;
 		}
 		return current == null ? parent : current;
 	}
+
 	private Node<T> getParent(T key) {
-		//returns null in the case the object matching key exists
+		// returns null in the case the object matching key exists
 		Node<T> node = getParentOrNode(key);
 		Node<T> parent = null;
 		if (comp.compare(key, node.obj) != 0) {
@@ -94,29 +105,32 @@ private class TreeSetIterator implements Iterator<T> {
 		}
 		return parent;
 	}
+
 	private Node<T> getNode(T key) {
-		//returns null in the case the object matching key doesn't exist
-				Node<T> node = getParentOrNode(key);
-				Node<T> res = null;
-				if (node != null && comp.compare(key, node.obj) == 0) {
-					res = node;
-				}
-				return res;
-			}
+		// returns null in the case the object matching key doesn't exist
+		Node<T> node = getParentOrNode(key);
+		Node<T> res = null;
+		if (node != null && comp.compare(key, node.obj) == 0) {
+			res = node;
+		}
+		return res;
+	}
+
 	public TreeSet(Comparator<T> comp) {
 		this.comp = comp;
 	}
-	
+
 	public TreeSet() {
-		this((Comparator<T>)Comparator.naturalOrder());
+		this((Comparator<T>) Comparator.naturalOrder());
 	}
+
 	@Override
 	public T get(Object pattern) {
-		Node<T> node = getNode((T)pattern);
+		Node<T> node = getNode((T) pattern);
 		T res = null;
 		if (node != null) {
 			res = node.obj;
-		
+
 		}
 		return res;
 	}
@@ -125,23 +139,23 @@ private class TreeSetIterator implements Iterator<T> {
 	public boolean add(T obj) {
 		Node<T> node = new Node<T>(obj);
 		boolean res = false;
-		if(root == null) {
+		if (root == null) {
 			res = true;
 			root = node;
 		} else {
 			Node<T> parent = getParent(obj);
-			if(parent != null) {
+			if (parent != null) {
 				res = true;
 				node.parent = parent;
 				int compRes = comp.compare(obj, parent.obj);
-				if(compRes > 0) {
+				if (compRes > 0) {
 					parent.right = node;
 				} else {
 					parent.left = node;
 				}
 			}
 		}
-		if(res) {
+		if (res) {
 			size++;
 		}
 		return res;
@@ -150,7 +164,7 @@ private class TreeSetIterator implements Iterator<T> {
 	@Override
 	public boolean remove(Object pattern) {
 		boolean res = false;
-		Node<T> node = getNode((T)pattern);
+		Node<T> node = getNode((T) pattern);
 		if (node != null) {
 			removeNode(node);
 			res = true;
@@ -193,23 +207,24 @@ private class TreeSetIterator implements Iterator<T> {
 			child.parent = parent;
 		}
 		node.setNulls();
-		
+
 	}
+
 	@Override
 	public boolean contains(Object pattern) {
-		
+
 		return getNode((T) pattern) != null;
 	}
 
 	@Override
 	public int size() {
-		
+
 		return size;
 	}
 
 	@Override
 	public Iterator<T> iterator() {
-		
+
 		return new TreeSetIterator();
 	}
 
@@ -219,32 +234,34 @@ private class TreeSetIterator implements Iterator<T> {
 		if (root != null) {
 			res = getLeastFrom(root).obj;
 		}
-		
+
 		return res;
 	}
 
 	private Node<T> getLeastFrom(Node<T> node) {
-		while(node.left != null) {
+		while (node.left != null) {
 			node = node.left;
 		}
 		return node;
 	}
+
 	@Override
 	public T last() {
 		T res = null;
 		if (root != null) {
 			res = getGreatestFrom(root).obj;
 		}
-		
+
 		return res;
 	}
 
 	private Node<T> getGreatestFrom(Node<T> node) {
-		while(node.right != null) {
+		while (node.right != null) {
 			node = node.right;
 		}
 		return node;
 	}
+
 	private T floorCeiling(T pattern, boolean isFloor) {
 		T res = null;
 		int compRes = 0;
@@ -258,6 +275,7 @@ private class TreeSetIterator implements Iterator<T> {
 		return current == null ? res : current.obj;
 
 	}
+
 	@Override
 	public T ceiling(T key) {
 		return floorCeiling(key, false);
@@ -267,33 +285,37 @@ private class TreeSetIterator implements Iterator<T> {
 	public T floor(T key) {
 		return floorCeiling(key, true);
 	}
-	
+
 	public void displayRotated() {
 		displayRotated(root, 1);
 	}
+
 	private void displayRotated(Node<T> root, int level) {
-		if(root != null) {
+		if (root != null) {
 			displayRotated(root.right, level + 1);
 			displayRoot(root, level);
 			displayRotated(root.left, level + 1);
-			
+
 		}
-		
+
 	}
+
 	private void displayRoot(Node<T> root, int level) {
-		
-		System.out.print(" ".repeat(level * spacesPerLevel ));
+
+		System.out.print(" ".repeat(level * spacesPerLevel));
 		System.out.println(root.obj);
-		
+
 	}
+
 	public int width() {
-		
+
 		return width(root);
 	}
+
 	private int width(Node<T> root) {
 		int res = 0;
-		if(root != null) {
-			if(root.left == null && root.right == null) {
+		if (root != null) {
+			if (root.left == null && root.right == null) {
 				res = 1;
 			} else {
 				res = width(root.left) + width(root.right);
@@ -301,10 +323,12 @@ private class TreeSetIterator implements Iterator<T> {
 		}
 		return res;
 	}
+
 	public int height() {
-		
+
 		return height(root);
 	}
+
 	private int height(Node<T> root) {
 		int res = 0;
 		if (root != null) {
@@ -314,11 +338,13 @@ private class TreeSetIterator implements Iterator<T> {
 		}
 		return res;
 	}
+
 	public void balance() {
-		Node<T> [] arrayNodes = getSortedArrayNodes();
+		Node<T>[] arrayNodes = getSortedArrayNodes();
 		root = balanceArray(arrayNodes, 0, size - 1, null);
-		
+
 	}
+
 	private Node<T> balanceArray(Node<T>[] arrayNodes, int left, int right, Node<T> parent) {
 		Node<T> root = null;
 		if (left <= right) {
@@ -330,19 +356,31 @@ private class TreeSetIterator implements Iterator<T> {
 		}
 		return root;
 	}
+
 	private Node<T>[] getSortedArrayNodes() {
-		Node<T> [] res = new Node[size];
+		Node<T>[] res = new Node[size];
 		int index = 0;
 		Node<T> current = getLeastFrom(root);
-		while(current != null) {
+		while (current != null) {
 			res[index++] = current;
 			current = getCurrent(current);
 		}
 		return res;
 	}
+
 	public void inverse() {
-		// TODO Auto-generated method stub
-		
+		inverse(root);
+	}
+
+	private void inverse(Node<T> node) {
+		if (node != null ) {
+
+			Node<T> temp = node.left;
+			node.left = node.right;
+			node.right = temp;
+			inverse(node.left);
+			inverse(node.right);
+		}
 	}
 
 }

@@ -85,9 +85,14 @@ public class TreeSetTest extends SortedSetTest {
 	}
 	@Test
 	void inverseTest() {
-		Integer[] expected = { 100, 30, 14, 10, 12, 8, -20 };
+		Integer[] expected = { 100, 30, 14, 12, 10, 8, -20 };
+		
 		treeSet.inverse();
-		assertArrayEquals(expected, treeSet.toArray(new Integer[0]));
+		Integer [] inversedArray = treeSet.toArray(new Integer[0]);
+		for(Integer elm : inversedArray ) {
+			System.out.println(elm);
+		}
+		assertArrayEquals(expected, inversedArray);
 		assertTrue(treeSet.contains(100));		
 	}
 
