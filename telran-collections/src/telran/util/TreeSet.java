@@ -374,7 +374,6 @@ public class TreeSet<T> implements SortedSet<T> {
 
 	private void inverse(Node<T> node) {
 		if (node != null ) {
-
 			Node<T> temp = node.left;
 			node.left = node.right;
 			node.right = temp;
