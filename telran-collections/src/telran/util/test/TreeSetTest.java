@@ -92,6 +92,7 @@ public class TreeSetTest extends SortedSetTest {
 //		for(Integer elm : inversedArray ) {
 //			System.out.println(elm);
 //		}
+		
 		assertArrayEquals(expected, inversedArray);
 		assertTrue(treeSet.contains(100));		
 	}
