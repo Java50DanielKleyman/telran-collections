@@ -22,9 +22,10 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public boolean remove(Object pattern) {
-		if (map.containsKey(pattern)) {
-			LinkedList.Node<T> removedNode = map.get(pattern);
+		LinkedList.Node<T> removedNode = map.get(pattern);
+		if (removedNode != null) {			
 			list.removeNode(removedNode);
+			map.remove(pattern);
 			return true;
 		}
 		return false;
@@ -39,7 +40,7 @@ public class LinkedHashSet<T> implements Set<T> {
 	@Override
 	public int size() {
 		
-		return 0;
+		return map.size();
 	}
 
 	@Override
@@ -50,8 +51,8 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public T get(Object pattern) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return map.get(pattern).obj;
 	}
 
 }

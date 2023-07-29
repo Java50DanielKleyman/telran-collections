@@ -69,4 +69,5 @@ public interface Map<K, V> {
 	Set<K> keySet();
 	Set<Entry<K, V>> entrySet();
 	Collection<V> values();
+	V remove(Object key);
 }
