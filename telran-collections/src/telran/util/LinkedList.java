@@ -50,7 +50,6 @@ public class LinkedList<T> implements List<T> {
 	@Override
 	public boolean add(T obj) {
 		Node<T> node = new Node<>(obj);
-//		Node<T> node = (Node<T>) obj;
 		addNode(size, node);
 		return true;
 	}
