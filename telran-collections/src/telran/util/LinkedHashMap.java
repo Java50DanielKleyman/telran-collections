@@ -5,7 +5,7 @@ import java.util.Iterator;
 import telran.util.LinkedList.Node;
 import telran.util.Map.Entry;
 
-public class LinkedHashMap<K, V> extends AbstractMap<K, V> {
+public class LinkedHashMap<T, K, V> extends AbstractMap<K, V> {
 	HashMap<K, LinkedList.Node<Entry <K, V>>> map = new HashMap<>();	
 	LinkedList<Entry <K, V>> list = new LinkedList<>();
 	
@@ -15,6 +15,7 @@ public class LinkedHashMap<K, V> extends AbstractMap<K, V> {
 		LinkedList.Node<Entry <K, V>> newNode = new Node<>(newEntry);
 		if (!map.containsKey(key)) {			
 			list.addTail(newNode);
+			list.size++;
 			map.put(key, newNode);
 			return true;
 		}
@@ -23,14 +24,14 @@ public class LinkedHashMap<K, V> extends AbstractMap<K, V> {
 
 
 	@Override
-	public boolean remove(Object pattern) {
+	public V remove(Object pattern) {
 		LinkedList.Node<Entry <K, V>> removedNode = map.get(pattern);
 		if (removedNode != null) {			
 			list.removeNode(removedNode);
 			map.remove(pattern);
-			return true;
+			return removedNode.obj.getValue();
 		}
-		return false;
+		return null;
 	}
 
 	public boolean contains(Object pattern) {
@@ -46,13 +47,13 @@ public class LinkedHashMap<K, V> extends AbstractMap<K, V> {
 
 	public Iterator<T> iterator() {
 
-		return list.iterator();
+		return (Iterator<T>) list.iterator();
 	}
 
 	@Override
-	public T get(Object pattern) {
+	public V get(Object pattern) {
 		
-		return map.get(pattern).obj;
+		return map.get(pattern).obj.getValue();
 	}
 
 

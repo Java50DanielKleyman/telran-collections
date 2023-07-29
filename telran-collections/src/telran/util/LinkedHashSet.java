@@ -13,6 +13,7 @@ public class LinkedHashSet<T> implements Set<T> {
 		if (!map.containsKey(obj)) {
 			LinkedList.Node<T> newNode = new Node<>(obj);			
 			list.addTail(newNode);
+			list.size++;
 			map.put(obj, newNode);
 			return true;
 		}

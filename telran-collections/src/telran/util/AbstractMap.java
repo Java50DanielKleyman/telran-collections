@@ -78,5 +78,16 @@ public abstract class AbstractMap<K, V> implements Map<K, V> {
 		}
 		return res;
 	}
-
+	 public V remove(Object key) {
+	        Entry<K, V> pattern = new Entry<>((K) key, null);
+	        Iterator<Entry<K, V>> iterator = set.iterator();
+	        while (iterator.hasNext()) {
+	            Entry<K, V> entry = iterator.next();
+	            if (entry.equals(pattern)) {
+	                iterator.remove();
+	                return entry.getValue();
+	            }
+	        }
+	        return null;
+	    }
 }
