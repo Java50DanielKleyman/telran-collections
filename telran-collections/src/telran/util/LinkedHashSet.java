@@ -38,7 +38,7 @@ public class LinkedHashSet<T> implements Set<T> {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 
