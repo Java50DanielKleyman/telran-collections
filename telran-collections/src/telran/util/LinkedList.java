@@ -227,5 +227,14 @@ public class LinkedList<T> implements List<T> {
 		}
 		return current == null ? -1 : index;
 	}
-
+	public Node<T> getNodeByPattern(T pattern) {
+        Node<T> current = head;
+        while (current != null) {
+            if (current.obj.equals(pattern)) {
+                return current; 
+            }
+            current = current.next;
+        }
+        return null; 
+    }
 }
