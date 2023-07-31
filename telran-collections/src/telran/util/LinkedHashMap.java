@@ -3,7 +3,7 @@ package telran.util;
 import java.util.Iterator;
 
 import telran.util.LinkedList.Node;
-import telran.util.Map.Entry;
+
 
 public class LinkedHashMap<T, K, V> extends HashMap<K, V> {
 	HashMap<K, V> map = new HashMap<>();
