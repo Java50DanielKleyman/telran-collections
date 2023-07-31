@@ -3,12 +3,13 @@ package telran.util;
 import java.util.Iterator;
 
 import telran.util.LinkedList.Node;
+import telran.util.Map.Entry;
 
 
 public class LinkedHashMap<T, K, V> extends HashMap<K, V> {
 	HashMap<K, V> map = new HashMap<>();
 	LinkedList<Entry<K, V>> list = new LinkedList<>();
-	private static final int MAX_ENTRIES = 100;
+	private static final int MAX_ENTRIES = 4;
 	boolean accessOrder;
 
 	public LinkedHashMap() {
@@ -27,7 +28,7 @@ public class LinkedHashMap<T, K, V> extends HashMap<K, V> {
 			map.put(key, value);
 			list.size++;
 			if (list.size > MAX_ENTRIES) {
-				removeEldestEntry(list.head);
+				removeEldestEntry(list.head);				
 			}
 			return true;
 		}
@@ -35,7 +36,7 @@ public class LinkedHashMap<T, K, V> extends HashMap<K, V> {
 	}
 
 	protected boolean removeEldestEntry(Node<Entry<K, V>> eldestEntry) {
-		remove(eldestEntry.obj.getKey());
+		remove(eldestEntry.obj.getKey());		
 		return size() <= MAX_ENTRIES;
 	}
 
@@ -46,11 +47,12 @@ public class LinkedHashMap<T, K, V> extends HashMap<K, V> {
 		if (removedNode != null) {
 			list.removeNode(removedNode);
 			map.remove(pattern);
-			return removedEntry.getValue();
+//			return removedEntry.getValue();
+			return removedNode.obj.getValue();
 		}
 		return null;
 	}
-
+	
 	public boolean contains(Object pattern) {
 		boolean res = map.containsKey(pattern);
 		if (res && accessOrder) {

@@ -82,13 +82,20 @@ protected Map<String, Integer> map;
 		Arrays.sort(res);
 		return res;
 	};
-	protected abstract String[] getKeysActual(String[] keys);
+	
+	protected String[] getKeysActual(String[] keys) {
+		Arrays.sort(keys);
+		return keys;
+	}
 	protected String[] getKeysExpected(String[] keys) {
 		String[] res = Arrays.copyOf(keys, keys.length);
 		Arrays.sort(res);
 		return res;
 	}
-	protected abstract Entry<String, Integer>[] getEntriesActual(Entry<String, Integer>[] entries);
+	protected Entry<String, Integer>[] getEntriesActual(Entry<String, Integer>[] entries) {
+		Arrays.sort(entries);
+		return entries;
+	}
 	protected Entry<String, Integer>[] getEntriesExpected(Entry<String, Integer>[] entries) {
 		Arrays.sort(entries);
 		return entries;
